@@ -2,16 +2,16 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    database_host: str = "db"
-    database_port: int = 5432
-    database_user: str = "postgres"
-    database_password: str = "postgres"
-    database_name: str = "fake_bank"
+    database_host: str
+    database_port: int
+    database_user: str
+    database_password: str
+    database_name: str
 
     # простейший токен для админ-доступа в примере
-    admin_token: str = "secret"
-    jwt_secret: str = "change_me"
-    jwt_algorithm: str = "HS256"
+    admin_token: str
+    jwt_secret: str
+    jwt_algorithm: str
 
     class Config:
         env_prefix = "APP_"

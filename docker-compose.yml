@@ -2,10 +2,8 @@ version: "3.9"
 services:
   db:
     image: postgres:16
-    environment:
-      POSTGRES_DB: fake_bank
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+    env_file:
+      - .env
     ports:
       - "5432:5432"
     volumes:
@@ -15,13 +13,8 @@ services:
     build: .
     depends_on:
       - db
-    environment:
-      APP_DATABASE_HOST: db
-      APP_DATABASE_PORT: 5432
-      APP_DATABASE_USER: postgres
-      APP_DATABASE_PASSWORD: postgres
-      APP_DATABASE_NAME: fake_bank
-      APP_JWT_SECRET: change_me
+    env_file:
+      - .env
     ports:
       - "8000:8000"
 
