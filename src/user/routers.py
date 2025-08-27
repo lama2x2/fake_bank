@@ -30,8 +30,16 @@ def list_users(db: Session = Depends(get_db)):
 transfer_router = APIRouter(tags=["transfer"])
 
 
-@transfer_router.post("/transfer", status_code=status.HTTP_200_OK, dependencies=[Depends(require_admin)])
-def make_transfer(payload: TransferRequest, db: Session = Depends(get_db)):
+@transfer_router.post("/transfer", status_code=status.HTTP_200_OK)
+def make_transfer(
+    payload: TransferRequest,
+    claims: dict = Depends(require_jwt),
+    db: Session = Depends(get_db),
+):
+    # только владелец from_user_id может инициировать перевод
+    subject = claims.get("sub")
+    if subject is None or str(payload.from_user_id) != str(subject):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="forbidden")
     try:
         from_user, to_user = crud.transfer(
             db,
