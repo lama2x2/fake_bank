@@ -4,7 +4,8 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from src.config import get_db
+from src.utils.db import get_db
+from src.utils.permissions import require_admin
 from src.user import crud
 from src.user.schemas import UserCreate, UserOut, TransferRequest
 
@@ -12,7 +13,7 @@ from src.user.schemas import UserCreate, UserOut, TransferRequest
 router = APIRouter(prefix="/users", tags=["users"])
 
 
-@router.post("", response_model=UserOut, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=UserOut, status_code=status.HTTP_201_CREATED, dependencies=[Depends(require_admin)])
 def create_user(payload: UserCreate, db: Session = Depends(get_db)):
     try:
         return crud.create_user(db, payload.name, payload.email, Decimal(payload.balance))
@@ -28,7 +29,7 @@ def list_users(db: Session = Depends(get_db)):
 transfer_router = APIRouter(tags=["transfer"])
 
 
-@transfer_router.post("/transfer", status_code=status.HTTP_200_OK)
+@transfer_router.post("/transfer", status_code=status.HTTP_200_OK, dependencies=[Depends(require_admin)])
 def make_transfer(payload: TransferRequest, db: Session = Depends(get_db)):
     try:
         from_user, to_user = crud.transfer(

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from src.config import Base, engine
+from src.utils.db import Base, engine
 from src.user.routers import router as users_router, transfer_router
 
 
