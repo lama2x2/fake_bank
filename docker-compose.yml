@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: fake_bank
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      APP_DATABASE_HOST: db
+      APP_DATABASE_PORT: 5432
+      APP_DATABASE_USER: postgres
+      APP_DATABASE_PASSWORD: postgres
+      APP_DATABASE_NAME: fake_bank
+    ports:
+      - "8000:8000"
+
+volumes:
+  pg_data:
+
+
