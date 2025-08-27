@@ -1,4 +1,5 @@
 from decimal import Decimal
+from uuid import UUID
 
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
@@ -23,7 +24,7 @@ def list_users(db: Session) -> list[User]:
     return list(db.scalars(select(User).order_by(User.id)))
 
 
-def transfer(db: Session, from_user_id: int, to_user_id: int, amount: Decimal) -> tuple[User, User]:
+def transfer(db: Session, from_user_id: UUID, to_user_id: UUID, amount: Decimal) -> tuple[User, User]:
     if from_user_id == to_user_id:
         raise ValueError("cannot transfer to self")
 

@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from pydantic import BaseModel, EmailStr, Field
+from uuid import UUID
 
 
 class UserCreate(BaseModel):
@@ -10,7 +11,7 @@ class UserCreate(BaseModel):
 
 
 class UserOut(BaseModel):
-    id: int
+    id: UUID
     name: str
     email: EmailStr
     balance: Decimal
@@ -20,8 +21,8 @@ class UserOut(BaseModel):
 
 
 class TransferRequest(BaseModel):
-    from_user_id: int
-    to_user_id: int
+    from_user_id: UUID
+    to_user_id: UUID
     amount: Decimal = Field(gt=0)
 
 
