@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -13,9 +13,12 @@ class Settings(BaseSettings):
     jwt_secret: str
     jwt_algorithm: str
 
-    class Config:
-        env_prefix = "APP_"
-        env_file = ".env"
+    # pydantic-settings v2 style config
+    model_config = SettingsConfigDict(
+        env_prefix="APP_",
+        env_file=".env",
+        extra="ignore",  # игнорировать посторонние ключи в .env (например POSTGRES_*)
+    )
 
 
 settings = Settings()

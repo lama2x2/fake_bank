@@ -4,7 +4,7 @@ from sqlalchemy import Column, String, Numeric
 from sqlalchemy.dialects.postgresql import UUID as PGUUID
 from sqlalchemy.orm import validates
 
-from src.config import Base
+from src.utils.db import Base
 
 
 class User(Base):
