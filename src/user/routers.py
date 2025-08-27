@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from src.utils.db import get_db
 from src.utils.permissions import require_admin
+from src.utils.auth import require_jwt
 from src.user import crud
 from src.user.schemas import UserCreate, UserOut, TransferRequest
 
@@ -21,7 +22,7 @@ def create_user(payload: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
 
 
-@router.get("", response_model=list[UserOut])
+@router.get("", response_model=list[UserOut], dependencies=[Depends(require_jwt)])
 def list_users(db: Session = Depends(get_db)):
     return crud.list_users(db)
 

@@ -10,6 +10,8 @@ class Settings(BaseSettings):
 
     # простейший токен для админ-доступа в примере
     admin_token: str = "secret"
+    jwt_secret: str = "change_me"
+    jwt_algorithm: str = "HS256"
 
     class Config:
         env_prefix = "APP_"

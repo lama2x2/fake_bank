@@ -21,6 +21,7 @@ services:
       APP_DATABASE_USER: postgres
       APP_DATABASE_PASSWORD: postgres
       APP_DATABASE_NAME: fake_bank
+      APP_JWT_SECRET: change_me
     ports:
       - "8000:8000"
 
